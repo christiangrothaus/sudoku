@@ -2,10 +2,16 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Difficulty } from '../types/difficulties';
-import DifficultyButton from '../components/DifficultyButton';
-import DARK_THEME from '../themes/dark';
+import MenuButton from '../components/MenuButton';
+import THEMES from '../themes';
+import useTheme from '../hooks/useTheme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const DifficultyScreen = ({ navigation }) => {
+  const colorTheme = useTheme();
+  const safeAreaInsets = useSafeAreaInsets();
+  const styles = styleSheet(colorTheme, safeAreaInsets);
+
   const handleBack = useCallback(() => navigation.navigate('Home'), []);
 
   const navigateToBoard = useCallback((difficulty: Difficulty) => {
@@ -18,23 +24,29 @@ const DifficultyScreen = ({ navigation }) => {
         <Ionicons
           name="arrow-back"
           size={50}
-          color={DARK_THEME.color}
+          color={THEMES.color[colorTheme]}
           onPress={handleBack}
         />
       </View>
       <View style={styles.difficultyContainer}>
-        <DifficultyButton difficulty={Difficulty.Easy} onPress={navigateToBoard}/>
-        <DifficultyButton difficulty={Difficulty.Medium} onPress={navigateToBoard}/>
-        <DifficultyButton difficulty={Difficulty.Hard} onPress={navigateToBoard}/>
+        <MenuButton onPress={() => navigateToBoard(Difficulty.Easy)}>
+          {Difficulty[Difficulty.Easy]}
+        </MenuButton>
+        <MenuButton onPress={() => navigateToBoard(Difficulty.Medium)}>
+          {Difficulty[Difficulty.Medium]}
+        </MenuButton>
+        <MenuButton onPress={() => navigateToBoard(Difficulty.Hard)}>
+          {Difficulty[Difficulty.Hard]}
+        </MenuButton>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styleSheet = (colorTheme, safeAreaInsets) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DARK_THEME.backgroundColor,
+    backgroundColor: THEMES.backgroundColor[colorTheme],
   },
   difficultyContainer: {
     flex: 1,
@@ -42,15 +54,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   navigationContainer: {
-    marginTop: 15,
+    marginTop: safeAreaInsets.top,
     marginHorizontal: 10,
     position: 'absolute'
-  },
-  difficulty: {
-    fontSize: 50,
-    color: DARK_THEME.color,
-    fontWeight: 'bold',
-    marginVertical: 30
   }
 });
 

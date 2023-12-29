@@ -1,27 +1,27 @@
-import React, { useCallback } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
-import DARK_THEME from '../themes/dark';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import THEMES from '../themes';
 import { Difficulty } from '../types/difficulties';
+import useTheme from '../hooks/useTheme';
+import SodokuBoard from '../components/SodokuBoard';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BoardScreen = ({ navigation, route }) => {
-  const { difficulty }: {difficulty: Difficulty} = route.params;
-
-  const handleHome = useCallback(() => navigation.navigate('Home'), []);
+  const { difficulty, daily }: {difficulty: Difficulty, daily: Boolean} = route.params;
+  const colorTheme = useTheme();
+  const styles = styleSheet(colorTheme);
 
   return (
-    <View style={styles.container}>
-      <Entypo onPress={handleHome} name="home" size={24} color={DARK_THEME.color} />
-      <Text>BoardScreen</Text>
-      <Text>{Difficulty[difficulty]}</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <SodokuBoard daily={daily} difficulty={difficulty} />
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
+const styleSheet = (colorTheme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: DARK_THEME.backgroundColor,
+    backgroundColor: THEMES.backgroundColor[colorTheme],
     alignItems: 'center',
     justifyContent: 'center',
   },
