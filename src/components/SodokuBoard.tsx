@@ -3,8 +3,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import THEMES from '../themes';
 import useTheme from '../hooks/useTheme';
 import { Difficulty } from '../types/difficulties';
+import SodokuGame from '../classes/SodokuGame';
+import { SodokuCell } from '../types/sodoku';
 
-const SodokuBoardRow = ({ rowData }: {rowData: Array<Number>}) => {
+const SodokuBoardRow = ({ rowData }: {rowData: SodokuCell[]}) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
 
@@ -13,9 +15,11 @@ const SodokuBoardRow = ({ rowData }: {rowData: Array<Number>}) => {
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[0].toString()}</Text></View>
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[1].toString()}</Text></View>
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[2].toString()}</Text></View>
+      <View style={styles.verticalDivider} />
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[3].toString()}</Text></View>
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[4].toString()}</Text></View>
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[5].toString()}</Text></View>
+      <View style={styles.verticalDivider} />
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[6].toString()}</Text></View>
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[7].toString()}</Text></View>
       <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[8].toString()}</Text></View>
@@ -32,18 +36,25 @@ const SodokuBoard = ({ daily, difficulty }: SodokuBoardProps) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
 
+  const game = new SodokuGame(difficulty, daily);
+  const board = game.getBoard();
+
+  console.log(board);
+
   return (
     <View style={styles.container}>
       <View style={styles.boardWrapper}>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
-        <SodokuBoardRow rowData={[1, 2, 3, 4, 5, 6, 7, 8, 9]}/>
+        <SodokuBoardRow rowData={board[0]}/>
+        <SodokuBoardRow rowData={board[0]}/>
+        <SodokuBoardRow rowData={board[0]}/>
+        <View style={styles.hortizontalDivider} />
+        <SodokuBoardRow rowData={board[0]}/>
+        <SodokuBoardRow rowData={board[0]}/>
+        <SodokuBoardRow rowData={board[0]}/>
+        <View style={styles.hortizontalDivider} />
+        <SodokuBoardRow rowData={board[0]}/>
+        <SodokuBoardRow rowData={board[0]}/>
+        <SodokuBoardRow rowData={board[0]}/>
       </View>
     </View>
   );
@@ -78,6 +89,15 @@ const styleSheet = (colorTheme) => StyleSheet.create({
     textAlignVertical: 'center',
     color: THEMES.color[colorTheme],
     fontWeight: 'bold'
+  },
+  verticalDivider: {
+    backgroundColor: THEMES.color[colorTheme],
+    width: 2
+  },
+  hortizontalDivider: {
+    backgroundColor: THEMES.color[colorTheme],
+    height: 2,
+    alignSelf: 'stretch'
   }
 });
 
