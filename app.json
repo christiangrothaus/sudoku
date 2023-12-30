@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "sodoku",
-    "slug": "sodoku",
+    "name": "sudoku",
+    "slug": "sudoku",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
