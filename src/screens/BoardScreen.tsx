@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import THEMES from '../themes';
 import { Difficulty } from '../types/difficulties';
 import useTheme from '../hooks/useTheme';
-import SodokuBoard from '../components/SodokuBoard';
+import SudokuBoard from '../components/SudokuBoard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BoardScreen = ({ navigation, route }) => {
@@ -13,7 +13,7 @@ const BoardScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SodokuBoard daily={daily} difficulty={difficulty} />
+      <SudokuBoard daily={daily} difficulty={difficulty} />
     </SafeAreaView>
   );
 };
