@@ -1,10 +1,10 @@
 export type SudokuCell = {
   number: number | null
-  pencil: number[],
+  pencil: number[]
 };
 
 export type SudokuCellPosition = [number, number];
 
 export type SudokuSectionPosition = [number, number];
 
-export type SudokuBoard = SudokuCell[][];
+export type SudokuCellData = SudokuCell[][];
