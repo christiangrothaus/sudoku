@@ -165,6 +165,7 @@ export default class SudokuBoard {
       }
     });
 
+    // eslint-disable-next-line no-console
     console.log(output);
   }
 
