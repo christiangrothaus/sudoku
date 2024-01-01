@@ -4,15 +4,15 @@ import { shuffleArray } from '../utilities/sudoku';
 
 export default class SudokuBoard {
   private grid = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null, null],
   ];
   private counter = 0;
 
@@ -25,10 +25,11 @@ export default class SudokuBoard {
   }
 
   // A function to check if the grid is full
-  private static checkGrid(board: SudokuBoard) {
+  private static checkGrid(board: SudokuBoard, invalidValue = null) {
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
-        if (board.getCell([i, j]) === 0) {
+        const cellValue = board.getCell([i, j])
+        if (cellValue === invalidValue) {
           return false;
         }
       }
@@ -39,10 +40,11 @@ export default class SudokuBoard {
   }
 
   private static solveBoard(board: SudokuBoard) {
-    //Find next empty cell
+    let row: number
+    let col: number
     for (let i = 0; i < 81; i++) {
-      const row = Math.floor(i / 9);
-      const col = i % 9;
+      row = Math.floor(i / 9);
+      col = i % 9;
       if (board.getCell([row, col]) === 0) {
         for (const value of CELL_VALUES) {
           // Check that this value has not already be used on this row
@@ -52,7 +54,7 @@ export default class SudokuBoard {
               // Check that this value has not already be used on this 3x3 square
               if (!board.isNumberInSection(value, [row, col])) {
                 board.setCell([row, col], value);
-                if (SudokuBoard.checkGrid(board)) {
+                if (SudokuBoard.checkGrid(board, 0)) {
                   board.counter++;
                   break;
                 } else {
@@ -66,43 +68,45 @@ export default class SudokuBoard {
         }
         break;
       }
-      board.setCell([row, col], 0);
     }
+    board.setCell([row, col], 0);
   }
 
   // A backtracking/recursive function to check all possible combinations of numbers until a solution is found
-  private static fillBoard(board: SudokuBoard): Boolean {
-    // Find next empty cell
-    for (let i = 0; i < 81; i++) {
-      const row = Math.floor(i / 9);
-      const col = i % 9;
-      if (board.getCell([row, col]) === 0) {
+  private static fillBoard(board: SudokuBoard, loop = 0): Boolean {
+    const boardSize = 81
+    let row: number
+    let col: number
+    for (let i = 0; i < boardSize; i++) {
+      row = Math.floor(i / 9);
+      col = i % 9;
+
+      const currentCellValue = board.getCell([row, col])
+      if (currentCellValue === null) {
         const numbers = shuffleArray(CELL_VALUES);
 
         for (const value of numbers) {
+          const notInRow = !board.isNumberInRow(value, row)
+          const notInColumn = !board.isNumberInColumn(value, col)
+          const notInSection = !board.isNumberInSection(value, [row, col])
+
           // Check that this value has not already be used on this row
-          if (!board.isNumberInRow(value, row)) {
-            // Check that this value has not already be used on this column
-            if (!board.isNumberInColumn(value, col)) {
-              // Check that this value has not already be used on this 3x3 square
-              if (!board.isNumberInSection(value, [row, col])) {
-                board.setCell([row, col], value);
-                console.log(board.getGrid());
-                if (SudokuBoard.checkGrid(board)) {
-                  return true;
-                } else {
-                  if (SudokuBoard.fillBoard(board)) {
-                    return true;
-                  }
-                }
+          if (notInRow && notInColumn && notInSection) {
+            board.setCell([row, col], value);
+
+            if (SudokuBoard.checkGrid(board)) {
+              return true;
+            } else {
+              if (SudokuBoard.fillBoard(board, loop++)) {
+                return true;
               }
             }
           }
         }
         break;
       }
-      board.setCell([row, col], 0);
     }
+    board.setCell([row, col], null);
   }
 
   private createBoard(attempts = 5) {
@@ -126,7 +130,7 @@ export default class SudokuBoard {
       this.counter = 0;
       SudokuBoard.solveBoard(boardCopy);
       // If the number of solution is different from 1 then we need to cancel the change by putting the value we took away back in the grid
-      if (this.counter !== 1) {
+      if (boardCopy.counter !== 1) {
         this.setCell([row, col], backup);
         // We could stop here, but we can also have another attempt with a different cell just to try to remove more numbers
         attempts -= 1;
@@ -135,19 +139,41 @@ export default class SudokuBoard {
   }
 
   public copy(): SudokuBoard {
-    return new SudokuBoard(this.grid);
+    const clonedGrid = this.grid.map(row => row.slice())
+    const board = new SudokuBoard(clonedGrid)
+    return board
   }
 
   public getGrid(): number[][] {
     return this.grid;
   }
 
+  public showGrid(label?: string) {
+    let output = ''
+
+    if (label) {
+      output += `${label}\n`
+    }
+
+    this.grid.forEach((row, rIdx) => {
+      const seperator = (idx) => (idx !== 0 && idx !== 8) && (idx + 1) % 3 === 0 ? '| ' : ''
+      const cols = row.reduce((acc, curr, idx) => acc += `${curr} ${seperator(idx)}`, '').trimEnd()
+      output += `${cols}\n`
+
+      if (rIdx !== 8 && (rIdx + 1) % 3 === 0) {
+        output += `---------------------\n`
+      }
+    })
+
+    console.log(output)
+  }
+
   public getRow(rowIndex: number): number[] {
     return this.grid[rowIndex];
   }
 
-  public getCell(cellPosition: SudokuCellPosition): number {
-    return this.grid[cellPosition[0]][cellPosition[1]];
+  public getCell([row, col]: SudokuCellPosition): number {
+    return this.grid[row][col];
   }
 
   public setCell(cellPosition: SudokuCellPosition, value: number) {
@@ -155,13 +181,8 @@ export default class SudokuBoard {
   }
 
   public isNumberInRow(number: number, rowIndex: number): Boolean {
-    this.grid[rowIndex].forEach((value) => {
-      if (value === number) {
-        return true;
-      }
-    });
-
-    return false;
+    const row = this.grid[rowIndex]
+    return !!row.find(value => value === number)
   }
 
   public isNumberInColumn(number: number, columnIndex: number): Boolean {
