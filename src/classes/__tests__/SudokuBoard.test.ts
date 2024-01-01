@@ -6,7 +6,7 @@ describe('SudokuBoard', () => {
       const board = new SudokuBoard();
 
       board.forEachCell((cell) => {
-        expect(cell).not.toBe(0);
+        expect(cell).not.toBe(null);
       });
     });
   });
