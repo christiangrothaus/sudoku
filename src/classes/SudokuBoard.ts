@@ -28,7 +28,7 @@ export default class SudokuBoard {
   private static checkGrid(board: SudokuBoard, invalidValue = null) {
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
-        const cellValue = board.getCell([i, j])
+        const cellValue = board.getCell([i, j]);
         if (cellValue === invalidValue) {
           return false;
         }
@@ -40,8 +40,8 @@ export default class SudokuBoard {
   }
 
   private static solveBoard(board: SudokuBoard) {
-    let row: number
-    let col: number
+    let row: number;
+    let col: number;
     for (let i = 0; i < 81; i++) {
       row = Math.floor(i / 9);
       col = i % 9;
@@ -74,21 +74,21 @@ export default class SudokuBoard {
 
   // A backtracking/recursive function to check all possible combinations of numbers until a solution is found
   private static fillBoard(board: SudokuBoard, loop = 0): Boolean {
-    const boardSize = 81
-    let row: number
-    let col: number
+    const boardSize = 81;
+    let row: number;
+    let col: number;
     for (let i = 0; i < boardSize; i++) {
       row = Math.floor(i / 9);
       col = i % 9;
 
-      const currentCellValue = board.getCell([row, col])
+      const currentCellValue = board.getCell([row, col]);
       if (currentCellValue === null) {
         const numbers = shuffleArray(CELL_VALUES);
 
         for (const value of numbers) {
-          const notInRow = !board.isNumberInRow(value, row)
-          const notInColumn = !board.isNumberInColumn(value, col)
-          const notInSection = !board.isNumberInSection(value, [row, col])
+          const notInRow = !board.isNumberInRow(value, row);
+          const notInColumn = !board.isNumberInColumn(value, col);
+          const notInSection = !board.isNumberInSection(value, [row, col]);
 
           // Check that this value has not already be used on this row
           if (notInRow && notInColumn && notInSection) {
@@ -139,9 +139,9 @@ export default class SudokuBoard {
   }
 
   public copy(): SudokuBoard {
-    const clonedGrid = this.grid.map(row => row.slice())
-    const board = new SudokuBoard(clonedGrid)
-    return board
+    const clonedGrid = this.grid.map(row => row.slice());
+    const board = new SudokuBoard(clonedGrid);
+    return board;
   }
 
   public getGrid(): number[][] {
@@ -149,23 +149,23 @@ export default class SudokuBoard {
   }
 
   public showGrid(label?: string) {
-    let output = ''
+    let output = '';
 
     if (label) {
-      output += `${label}\n`
+      output += `${label}\n`;
     }
 
     this.grid.forEach((row, rIdx) => {
-      const seperator = (idx) => (idx !== 0 && idx !== 8) && (idx + 1) % 3 === 0 ? '| ' : ''
-      const cols = row.reduce((acc, curr, idx) => acc += `${curr} ${seperator(idx)}`, '').trimEnd()
-      output += `${cols}\n`
+      const seperator = (idx) => (idx !== 0 && idx !== 8) && (idx + 1) % 3 === 0 ? '| ' : '';
+      const cols = row.reduce((acc, curr, idx) => acc += `${curr} ${seperator(idx)}`, '').trimEnd();
+      output += `${cols}\n`;
 
       if (rIdx !== 8 && (rIdx + 1) % 3 === 0) {
-        output += `---------------------\n`
+        output += '---------------------\n';
       }
-    })
+    });
 
-    console.log(output)
+    console.log(output);
   }
 
   public getRow(rowIndex: number): number[] {
@@ -181,8 +181,8 @@ export default class SudokuBoard {
   }
 
   public isNumberInRow(number: number, rowIndex: number): Boolean {
-    const row = this.grid[rowIndex]
-    return !!row.find(value => value === number)
+    const row = this.grid[rowIndex];
+    return !!row.find(value => value === number);
   }
 
   public isNumberInColumn(number: number, columnIndex: number): Boolean {
