@@ -2,17 +2,20 @@ import { CELL_VALUES } from '../constants/sudoku';
 import { SudokuCellPosition } from '../types/sudoku';
 import { shuffleArray } from '../utilities/sudoku';
 
+export const EMPTY_VALUE = undefined;
+export const UNSET_VALUE = null;
+
 export default class SudokuBoard {
   private grid = [
-    [null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null, null],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
+    [UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE, UNSET_VALUE],
   ];
   private counter = 0;
 
@@ -25,7 +28,7 @@ export default class SudokuBoard {
   }
 
   // A function to check if the grid is full
-  private static checkGrid(board: SudokuBoard, invalidValue = null) {
+  private static checkGrid(board: SudokuBoard, invalidValue) {
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
         const cellValue = board.getCell([i, j]);
@@ -45,7 +48,7 @@ export default class SudokuBoard {
     for (let i = 0; i < 81; i++) {
       row = Math.floor(i / 9);
       col = i % 9;
-      if (board.getCell([row, col]) === 0) {
+      if (board.getCell([row, col]) === EMPTY_VALUE) {
         for (const value of CELL_VALUES) {
           // Check that this value has not already be used on this row
           if (!board.isNumberInRow(value, row)) {
@@ -54,7 +57,7 @@ export default class SudokuBoard {
               // Check that this value has not already be used on this 3x3 square
               if (!board.isNumberInSection(value, [row, col])) {
                 board.setCell([row, col], value);
-                if (SudokuBoard.checkGrid(board, 0)) {
+                if (SudokuBoard.checkGrid(board, EMPTY_VALUE)) {
                   board.counter++;
                   break;
                 } else {
@@ -69,7 +72,7 @@ export default class SudokuBoard {
         break;
       }
     }
-    board.setCell([row, col], 0);
+    board.setCell([row, col], EMPTY_VALUE);
   }
 
   // A backtracking/recursive function to check all possible combinations of numbers until a solution is found
@@ -82,7 +85,7 @@ export default class SudokuBoard {
       col = i % 9;
 
       const currentCellValue = board.getCell([row, col]);
-      if (currentCellValue === null) {
+      if (currentCellValue === UNSET_VALUE) {
         const numbers = shuffleArray(CELL_VALUES);
 
         for (const value of numbers) {
@@ -94,7 +97,7 @@ export default class SudokuBoard {
           if (notInRow && notInColumn && notInSection) {
             board.setCell([row, col], value);
 
-            if (SudokuBoard.checkGrid(board)) {
+            if (SudokuBoard.checkGrid(board, UNSET_VALUE)) {
               return true;
             } else {
               if (SudokuBoard.fillBoard(board, loop++)) {
@@ -106,7 +109,7 @@ export default class SudokuBoard {
         break;
       }
     }
-    board.setCell([row, col], null);
+    board.setCell([row, col], UNSET_VALUE);
   }
 
   private createBoard(attempts = 5) {
@@ -116,13 +119,13 @@ export default class SudokuBoard {
       //Select a random cell that is not already empty
       let row = Math.floor(Math.random() * 9);
       let col = Math.floor(Math.random() * 9);
-      while (this.getCell([row, col]) === 0) {
+      while (this.getCell([row, col]) === EMPTY_VALUE) {
         row = Math.floor(Math.random() * 9);
         col = Math.floor(Math.random() * 9);
       }
       // Remember its cell value in case we need to put it back
       const backup = this.getCell([row, col]);
-      this.setCell([row, col], 0);
+      this.setCell([row, col], EMPTY_VALUE);
 
       const boardCopy = this.copy();
 
@@ -157,7 +160,8 @@ export default class SudokuBoard {
 
     this.grid.forEach((row, rIdx) => {
       const seperator = (idx) => (idx !== 0 && idx !== 8) && (idx + 1) % 3 === 0 ? '| ' : '';
-      const cols = row.reduce((acc, curr, idx) => acc += `${curr} ${seperator(idx)}`, '').trimEnd();
+      const displayValue = (val) => val === undefined ? '?' : val;
+      const cols = row.reduce((acc, curr, idx) => acc += `${displayValue(curr)} ${seperator(idx)}`, '').trimEnd();
       output += `${cols}\n`;
 
       if (rIdx !== 8 && (rIdx + 1) % 3 === 0) {

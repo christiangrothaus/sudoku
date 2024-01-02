@@ -3,26 +3,25 @@ import { View, Text, StyleSheet } from 'react-native';
 import THEMES from '../themes';
 import useTheme from '../hooks/useTheme';
 import { Difficulty } from '../types/difficulties';
-import SudokuGame from '../classes/SudokuGame';
-import { SudokuCell } from '../types/sudoku';
+import SudokuBoardClass from '../classes/SudokuBoard';
 
-const SudokuBoardRow = ({ rowData }: {rowData: SudokuCell[]}) => {
+const SudokuBoardRow = ({ rowData }: {rowData: number[]}) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
 
   return (
     <View style={styles.boardRow}>
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[0]?.number?.toString()}</Text></View>
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[1]?.number?.toString()}</Text></View>
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[2]?.number?.toString()}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[0]}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[1]}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[2]}</Text></View>
       <View style={styles.verticalDivider} />
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[3]?.number?.toString()}</Text></View>
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[4]?.number?.toString()}</Text></View>
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[5]?.number?.toString()}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[3]}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[4]}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[5]}</Text></View>
       <View style={styles.verticalDivider} />
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[6]?.number?.toString()}</Text></View>
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[7]?.number?.toString()}</Text></View>
-      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[8]?.number?.toString()}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[6]}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[7]}</Text></View>
+      <View style={styles.cellContainer}><Text style={styles.cellText}>{rowData[8]}</Text></View>
     </View>
   );
 };
@@ -36,23 +35,22 @@ const SudokuBoard = ({ daily, difficulty }: SudokuBoardProps) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
 
-  const game = new SudokuGame(difficulty, daily);
-  const board = game.getBoard();
+  const board = new SudokuBoardClass();
 
   return (
     <View style={styles.container}>
       <View style={styles.boardWrapper}>
-        <SudokuBoardRow rowData={board[0]}/>
-        <SudokuBoardRow rowData={board[1]}/>
-        <SudokuBoardRow rowData={board[2]}/>
+        <SudokuBoardRow rowData={board.getRow(0)}/>
+        <SudokuBoardRow rowData={board.getRow(1)}/>
+        <SudokuBoardRow rowData={board.getRow(2)}/>
         <View style={styles.hortizontalDivider} />
-        <SudokuBoardRow rowData={board[3]}/>
-        <SudokuBoardRow rowData={board[4]}/>
-        <SudokuBoardRow rowData={board[5]}/>
+        <SudokuBoardRow rowData={board.getRow(3)}/>
+        <SudokuBoardRow rowData={board.getRow(4)}/>
+        <SudokuBoardRow rowData={board.getRow(5)}/>
         <View style={styles.hortizontalDivider} />
-        <SudokuBoardRow rowData={board[6]}/>
-        <SudokuBoardRow rowData={board[7]}/>
-        <SudokuBoardRow rowData={board[8]}/>
+        <SudokuBoardRow rowData={board.getRow(6)}/>
+        <SudokuBoardRow rowData={board.getRow(7)}/>
+        <SudokuBoardRow rowData={board.getRow(8)}/>
       </View>
     </View>
   );
