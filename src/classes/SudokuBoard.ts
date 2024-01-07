@@ -151,7 +151,7 @@ export default class SudokuBoard {
     return this.grid;
   }
 
-  public showGrid(label?: string) {
+  public printGrid(label?: string) {
     let output = '';
 
     if (label) {
