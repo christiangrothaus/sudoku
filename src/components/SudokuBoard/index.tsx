@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
 import { Difficulty } from '../../types/difficulties';
-import SudokuBoardClass from '../../classes/SudokuBoard';
 import SudokuNumberSelector from './NumberSelector';
 import SudokuBoardRow from './SudokuRow';
 import BoardContext from '../../contexts/BoardContext';
+import { createSudokuBoard } from '../../utilities/sudokuBoard';
 
 type SudokuBoardProps = {
   daily: Boolean,
@@ -15,12 +15,11 @@ type SudokuBoardProps = {
 
 const SudokuBoard = ({ daily, difficulty }: SudokuBoardProps) => {
   const colorTheme = useTheme();
+  const [board, setBoard] = useState(createSudokuBoard());
   const styles = styleSheet(colorTheme);
 
-  const board = useMemo(() => new SudokuBoardClass(), []);
-
   return (
-    <BoardContext.Provider value={board}>
+    <BoardContext.Provider value={[board, setBoard]}>
       <View style={styles.container}>
         <View style={styles.boardWrapper}>
           <SudokuBoardRow row={0}/>

@@ -9,21 +9,21 @@ const SudokuBoardRow = ({ row }: {row: number}) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
   const board = useContext(BoardContext);
-  const rowData = board.getRow(row);
+  const rowData = board[row];
 
   return (
     <View style={styles.boardRow}>
-      <SudokuCell value={rowData[0]} cellPosition={[row, 0]}/>
-      <SudokuCell value={rowData[1]} cellPosition={[row, 1]}/>
-      <SudokuCell value={rowData[2]} cellPosition={[row, 2]}/>
+      <SudokuCell cell={rowData[0]} cellPosition={[row, 0]}/>
+      <SudokuCell cell={rowData[1]} cellPosition={[row, 1]}/>
+      <SudokuCell cell={rowData[2]} cellPosition={[row, 2]}/>
       <View style={styles.verticalDivider} />
-      <SudokuCell value={rowData[3]} cellPosition={[row, 3]}/>
-      <SudokuCell value={rowData[4]} cellPosition={[row, 4]}/>
-      <SudokuCell value={rowData[5]} cellPosition={[row, 5]}/>
+      <SudokuCell cell={rowData[3]} cellPosition={[row, 3]}/>
+      <SudokuCell cell={rowData[4]} cellPosition={[row, 4]}/>
+      <SudokuCell cell={rowData[5]} cellPosition={[row, 5]}/>
       <View style={styles.verticalDivider} />
-      <SudokuCell value={rowData[6]} cellPosition={[row, 6]}/>
-      <SudokuCell value={rowData[7]} cellPosition={[row, 7]}/>
-      <SudokuCell value={rowData[8]} cellPosition={[row, 8]}/>
+      <SudokuCell cell={rowData[6]} cellPosition={[row, 6]}/>
+      <SudokuCell cell={rowData[7]} cellPosition={[row, 7]}/>
+      <SudokuCell cell={rowData[8]} cellPosition={[row, 8]}/>
     </View>
   );
 };

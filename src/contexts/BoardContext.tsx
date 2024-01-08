@@ -1,6 +1,7 @@
 import { createContext } from 'react';
-import SudokuBoard from '../classes/SudokuBoard';
+import { createUnsetSudokuBoard } from '../utilities/sudokuBoard';
+import { SudokuBoard } from '../types/sudoku';
 
-export const BoardContext = createContext<SudokuBoard>(new SudokuBoard());
+export const BoardContext = createContext<[SudokuBoard, Function]>([createUnsetSudokuBoard(), () => {}]);
 
 export default BoardContext;

@@ -1,4 +1,4 @@
-import SudokuBoard from './src/classes/SudokuBoard';
+import { createSudokuBoard, printBoard } from './src/utilities/sudokuBoard';
 
-const board = new SudokuBoard();
-board.printGrid();
+const board = createSudokuBoard();
+printBoard(board);

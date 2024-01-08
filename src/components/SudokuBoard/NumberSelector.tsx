@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
@@ -10,8 +10,11 @@ const SudokuNumberButton = ({ value }) => {
   const deviceWidth = Dimensions.get('window').width;
   const styles = styleSheet({ colorTheme, safeAreaInsets, deviceWidth });
 
+  const handlePress = useCallback(() => {
+  }, []);
+
   return (
-    <Pressable>
+    <Pressable onPress={handlePress}>
       <Text adjustsFontSizeToFit style={styles.text}>
         {value}
       </Text>
