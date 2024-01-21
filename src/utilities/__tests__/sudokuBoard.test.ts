@@ -1,3 +1,4 @@
+import { Difficulty } from '../../models/difficulties';
 import { shuffleArray, createSudokuBoard } from '../sudokuBoard';
 
 describe('shuffleArray', () => {
@@ -10,7 +11,7 @@ describe('shuffleArray', () => {
 });
 
 describe('createSudokuBoard', () => {
-  const genericBoard = createSudokuBoard();
+  const genericBoard = createSudokuBoard(Difficulty.Easy);
   it('should return a sudoku board that has some values', () => {
     let valueCount = 0;
 

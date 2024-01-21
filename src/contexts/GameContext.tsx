@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { SudokuCellPosition } from '../types/sudoku';
+import { SudokuCellPosition } from '../models/sudoku';
 
 type GameContextType = {
   selectedCell: SudokuCellPosition | null,

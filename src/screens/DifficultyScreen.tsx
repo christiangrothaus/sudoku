@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Difficulty } from '../types/difficulties';
+import { Difficulty } from '../models/difficulties';
 import MenuButton from '../components/MenuButton';
 import THEMES from '../themes';
 import useTheme from '../hooks/useTheme';

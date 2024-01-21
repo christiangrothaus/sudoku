@@ -1,6 +1,7 @@
 import { clone } from 'ramda';
 import { CELL_VALUES } from '../constants/sudoku';
-import { SudokuCellPosition, SudokuBoard } from '../types/sudoku';
+import { SudokuCellPosition, SudokuBoard } from '../models/sudoku';
+import { Difficulty } from '../models/difficulties';
 
 export const EMPTY_VALUE: undefined = undefined;
 export const UNSET_VALUE: null = null;
@@ -175,8 +176,10 @@ export const createUnsetSudokuBoard = (): SudokuBoard => {
   return unsetBoard;
 };
 
-export const createSudokuBoard = (attempts = 5) => {
+export const createSudokuBoard = (difficulty: Difficulty) => {
   const unsetBoard = createUnsetSudokuBoard();
+
+  let attempts = 5;
 
   const filledBoard = fillSudokuBoard(unsetBoard);
   while (attempts > 0) {

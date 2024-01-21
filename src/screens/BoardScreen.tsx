@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import THEMES from '../themes';
-import { Difficulty } from '../types/difficulties';
+import { Difficulty } from '../models/difficulties';
 import useTheme from '../hooks/useTheme';
 import SudokuBoard from '../components/SudokuBoard';
 import { SafeAreaView } from 'react-native-safe-area-context';

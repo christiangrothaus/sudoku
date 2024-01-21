@@ -8,7 +8,7 @@ import BoardContext from '../../contexts/BoardContext';
 const SudokuBoardRow = ({ row }: {row: number}) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
-  const board = useContext(BoardContext);
+  const [board, setBoard] = useContext(BoardContext);
   const rowData = board[row];
 
   return (

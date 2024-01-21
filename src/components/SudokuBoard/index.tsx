@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
-import { Difficulty } from '../../types/difficulties';
+import { Difficulty } from '../../models/difficulties';
 import SudokuNumberSelector from './NumberSelector';
 import SudokuBoardRow from './SudokuRow';
 import BoardContext from '../../contexts/BoardContext';
@@ -15,7 +15,7 @@ type SudokuBoardProps = {
 
 const SudokuBoard = ({ daily, difficulty }: SudokuBoardProps) => {
   const colorTheme = useTheme();
-  const [board, setBoard] = useState(createSudokuBoard());
+  const [board, setBoard] = useState(createSudokuBoard(difficulty));
   const styles = styleSheet(colorTheme);
 
   return (

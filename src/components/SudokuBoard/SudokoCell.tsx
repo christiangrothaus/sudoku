@@ -3,7 +3,7 @@ import { Text, StyleSheet, Pressable } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
 import GameContext from '../../contexts/GameContext';
-import { SudokuCell as SudokuCellType, SudokuCellPosition } from '../../types/sudoku';
+import { SudokuCell as SudokuCellType, SudokuCellPosition } from '../../models/sudoku';
 import { equals } from 'ramda';
 
 const SudokuCell = ({ cell, cellPosition }: {cell: SudokuCellType, cellPosition: SudokuCellPosition}) => {
