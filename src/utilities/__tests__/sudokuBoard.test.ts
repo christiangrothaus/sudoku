@@ -1,7 +1,7 @@
 import { Difficulty } from '../../models/difficulties';
 import { shuffleRow, createSudokuBoard } from '../sudokuBoard';
 
-describe('shuffleArray', () => {
+describe('shuffleRow', () => {
   it('should return an array with the same number of elements', () => {
     const oldArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const newArray = shuffleRow(oldArray);
