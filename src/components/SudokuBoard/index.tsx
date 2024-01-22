@@ -1,25 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
-import { Difficulty } from '../../models/difficulties';
 import SudokuNumberSelector from './NumberSelector';
 import SudokuBoardRow from './SudokuRow';
-import BoardContext from '../../contexts/BoardContext';
-import { createSudokuBoard } from '../../utilities/sudokuBoard';
 
-type SudokuBoardProps = {
-  daily?: Boolean,
-  difficulty: Difficulty
-};
-
-const SudokuBoard = ({ difficulty }: SudokuBoardProps) => {
+const SudokuBoard = () => {
   const colorTheme = useTheme();
-  const [board, setBoard] = useState(createSudokuBoard(difficulty));
   const styles = styleSheet(colorTheme);
 
   return (
-    <BoardContext.Provider value={[board, setBoard]}>
+    <>
       <View style={styles.container}>
         <View style={styles.boardWrapper}>
           <SudokuBoardRow row={0}/>
@@ -36,7 +27,7 @@ const SudokuBoard = ({ difficulty }: SudokuBoardProps) => {
         </View>
       </View>
       <SudokuNumberSelector />
-    </BoardContext.Provider>
+    </>
   );
 };
 

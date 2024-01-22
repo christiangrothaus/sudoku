@@ -7,4 +7,4 @@ export type SudokuCellPosition = [number, number];
 
 export type SudokuSectionPosition = [number, number];
 
-export type SudokuBoard = SudokuCell[][]
+export type SudokuBoard = SudokuCell[][];
