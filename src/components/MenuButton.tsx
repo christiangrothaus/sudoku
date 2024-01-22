@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import THEMES from '../themes';
 import useTheme from '../hooks/useTheme';
 
 type MenuButtonProps = {
   onPress: Function,
-  children: string
+  children: ReactNode
 }
 
 const MenuButton = ({ onPress, children }: MenuButtonProps) => {
