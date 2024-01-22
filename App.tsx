@@ -7,6 +7,7 @@ import DifficultyScreen from './src/screens/DifficultyScreen';
 import BoardScreen from './src/screens/BoardScreen';
 import { useColorScheme } from 'react-native';
 import ThemeContext from './src/contexts/ThemeContext';
+import { Screen } from './src/models/screens';
 
 const Stack = createStackNavigator();
 
@@ -20,9 +21,9 @@ const App = () => {
           headerShown: false,
           presentation: 'transparentModal'
         }}>
-          <Stack.Screen name="Home" component={HomeScreen}/>
-          <Stack.Screen name="Difficulty" component={DifficultyScreen}/>
-          <Stack.Screen name="Board" component={BoardScreen}/>
+          <Stack.Screen name={Screen.HOME} component={HomeScreen}/>
+          <Stack.Screen name={Screen.DIFFICULTY} component={DifficultyScreen}/>
+          <Stack.Screen name={Screen.BOARD} component={BoardScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeContext.Provider>

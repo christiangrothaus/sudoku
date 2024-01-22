@@ -6,6 +6,7 @@ import MenuButton from '../components/MenuButton';
 import THEMES from '../themes';
 import useTheme from '../hooks/useTheme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Screen } from '../models/screens';
 
 const DifficultyScreen = ({ navigation }) => {
   const colorTheme = useTheme();
@@ -15,7 +16,7 @@ const DifficultyScreen = ({ navigation }) => {
   const handleBack = useCallback(() => navigation.navigate('Home'), []);
 
   const navigateToBoard = useCallback((difficulty: Difficulty) => {
-    navigation.navigate('Board', { difficulty });
+    navigation.navigate(Screen.BOARD, { difficulty });
   }, []);
 
   return (

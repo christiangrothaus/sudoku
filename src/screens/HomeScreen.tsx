@@ -3,13 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import THEMES from '../themes';
 import useTheme from '../hooks/useTheme';
 import MenuButton from '../components/MenuButton';
+import { Screen } from '../models/screens';
 
 const HomeScreen = ({ navigation }) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
 
-  const handleStart = useCallback(() => navigation.navigate('Difficulty'), []);
-  const handleDaily = useCallback(() => navigation.navigate('Board', { daily: true }), []);
+  const handleStart = useCallback(() => navigation.navigate(Screen.DIFFICULTY), []);
+  const handleDaily = useCallback(() => navigation.navigate(Screen.BOARD, { daily: true }), []);
 
   return (
     <View style={styles.container}>
