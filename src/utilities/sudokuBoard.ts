@@ -178,8 +178,13 @@ export const createUnsetSudokuBoard = (): SudokuBoard => {
 
 export const createSudokuBoard = (difficulty: Difficulty) => {
   const unsetBoard = createUnsetSudokuBoard();
+  const difficultyAttempts = {
+    [Difficulty.Easy]: 1,
+    [Difficulty.Medium]: 3,
+    [Difficulty.Hard]: 5
+  };
 
-  let attempts = 5;
+  let attempts = difficultyAttempts[difficulty];
 
   const filledBoard = fillSudokuBoard(unsetBoard);
   while (attempts > 0) {

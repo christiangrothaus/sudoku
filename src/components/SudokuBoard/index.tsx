@@ -9,11 +9,11 @@ import BoardContext from '../../contexts/BoardContext';
 import { createSudokuBoard } from '../../utilities/sudokuBoard';
 
 type SudokuBoardProps = {
-  daily: Boolean,
+  daily?: Boolean,
   difficulty: Difficulty
 };
 
-const SudokuBoard = ({ daily, difficulty }: SudokuBoardProps) => {
+const SudokuBoard = ({ difficulty }: SudokuBoardProps) => {
   const colorTheme = useTheme();
   const [board, setBoard] = useState(createSudokuBoard(difficulty));
   const styles = styleSheet(colorTheme);

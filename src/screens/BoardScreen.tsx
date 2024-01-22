@@ -7,7 +7,7 @@ import SudokuBoard from '../components/SudokuBoard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GameContext from '../contexts/GameContext';
 
-const BoardScreen = ({ navigation, route }) => {
+const BoardScreen = ({ route }) => {
   const { difficulty, daily }: {difficulty: Difficulty, daily: Boolean} = route.params;
   const [selectedCell, setSelectedCell] = useState();
   const colorTheme = useTheme();

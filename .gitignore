@@ -33,3 +33,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# some folder that keeps getting made
+%ProgramData%/
