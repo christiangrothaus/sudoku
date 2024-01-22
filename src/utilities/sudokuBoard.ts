@@ -7,7 +7,7 @@ export const EMPTY_VALUE: undefined = undefined;
 export const UNSET_VALUE: null = null;
 const BOARD_SIZE = 81;
 
-export const shuffleArray = (array: number[]) => {
+export const shuffleRow = (array: number[]) => {
   const arrayOptions = clone(array);
   const shuffledArray = [];
 
@@ -137,7 +137,7 @@ const fillSudokuBoard = (board: SudokuBoard, loop = 0): SudokuBoard | undefined 
 
     const currentCellNumber = board[row][col].number;
     if (currentCellNumber === UNSET_VALUE) {
-      const numbers = shuffleArray(CELL_VALUES);
+      const numbers = shuffleRow(CELL_VALUES);
 
       for (const value of numbers) {
         const notInRow = !isNumberInRow(board)(value, row);

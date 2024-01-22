@@ -1,10 +1,10 @@
 import { Difficulty } from '../../models/difficulties';
-import { shuffleArray, createSudokuBoard } from '../sudokuBoard';
+import { shuffleRow, createSudokuBoard } from '../sudokuBoard';
 
 describe('shuffleArray', () => {
   it('should return an array with the same number of elements', () => {
     const oldArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const newArray = shuffleArray(oldArray);
+    const newArray = shuffleRow(oldArray);
 
     expect(oldArray.length).toBe(newArray.length);
   });
