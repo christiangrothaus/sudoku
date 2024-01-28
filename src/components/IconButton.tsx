@@ -1,23 +1,23 @@
 import React from 'react';
-import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { GestureResponderEvent, Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import THEMES from '../themes';
 import useTheme from '../hooks/useTheme';
 
-type IconButtonProps = {
-  onPress: Function,
+type PropsModel = {
   name: string,
+  onPress?: (e: GestureResponderEvent) => void,
   size?: number,
   style?: StyleProp<ViewStyle>
 }
 
-const IconButton = ({ onPress, name, size = 30, style }: IconButtonProps) => {
+const IconButton = ({ name, size = 30, style, onPress }: PropsModel) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
 
   return (
-    <Pressable style={style} onPress={(event) => onPress(event)}>
-      <Icon name={name} size={size} color={styles.icon.color}></Icon>
+    <Pressable style={style} onPress={onPress}>
+      <Icon name={name} size={size} color={styles.icon.color} />
     </Pressable>
   );
 };
