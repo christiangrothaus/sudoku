@@ -5,7 +5,7 @@ import useTheme from '../../hooks/useTheme';
 import SudokuBoard from '../../components/SudokuBoard';
 import { EdgeInsets, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import GameContext from '../../contexts/GameContext';
-import { SudokuBoard as SudokuBoardModel } from '../../models/sudoku';
+import { SudokuBoard as SudokuBoardModel, SudokuCellPosition } from '../../models/sudoku';
 import { createSudokuBoard } from '../../utilities/sudokuBoard';
 import BoardContext from '../../contexts/BoardContext';
 import { getBoard, storeBoard } from '../../utilities/storage';
@@ -35,7 +35,7 @@ const getInitialBoardFromParams = async (params: SearchParams): Promise<SudokuBo
 const Board = () => {
   const params = useLocalSearchParams();
   const [board, setBoard] = useState<SudokuBoardModel>();
-  const [selectedCell, setSelectedCell] = useState();
+  const [selectedCell, setSelectedCell] = useState<SudokuCellPosition>();
   const safeAreaInsets = useSafeAreaInsets();
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme, safeAreaInsets);
