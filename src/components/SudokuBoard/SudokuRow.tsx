@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
@@ -13,17 +13,17 @@ const SudokuBoardRow = ({ row }: {row: number}) => {
 
   return (
     <View style={styles.boardRow}>
-      <SudokuCell cell={rowData[0]} cellPosition={[row, 0]}/>
-      <SudokuCell cell={rowData[1]} cellPosition={[row, 1]}/>
-      <SudokuCell cell={rowData[2]} cellPosition={[row, 2]}/>
-      <View style={styles.verticalDivider} />
-      <SudokuCell cell={rowData[3]} cellPosition={[row, 3]}/>
-      <SudokuCell cell={rowData[4]} cellPosition={[row, 4]}/>
-      <SudokuCell cell={rowData[5]} cellPosition={[row, 5]}/>
-      <View style={styles.verticalDivider} />
-      <SudokuCell cell={rowData[6]} cellPosition={[row, 6]}/>
-      <SudokuCell cell={rowData[7]} cellPosition={[row, 7]}/>
-      <SudokuCell cell={rowData[8]} cellPosition={[row, 8]}/>
+      {rowData.map((cell, index) => {
+        const cellPosition = { x: index, y: row };
+        const shouldHaveDivider = (index + 1) % 3 === 0;
+
+        return ( // Using index as a key since this array never will change size or be reordered
+          <Fragment key={index}>
+            <SudokuCell cell={cell} cellPosition={cellPosition} />
+            {shouldHaveDivider && <View style={styles.verticalDivider} />}
+          </Fragment>
+        );
+      })}
     </View>
   );
 };

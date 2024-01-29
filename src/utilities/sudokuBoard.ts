@@ -1,6 +1,6 @@
-import { clone } from 'ramda';
+import { clone, equals } from 'ramda';
 import { CELL_VALUES } from '../constants/sudoku';
-import { SudokuCellPosition, SudokuBoard } from '../models/sudoku';
+import { SudokuCellPosition, SudokuBoard, SudokuSectionPosition } from '../models/sudoku';
 import { Difficulty } from '../models/difficulties';
 
 export const EMPTY_VALUE: undefined = undefined;
@@ -59,6 +59,29 @@ const isNumberInColumn = (board: SudokuBoard) => (number: number, columnIndex: n
   return isNumberInCol;
 };
 
+export const cellPositionToSectionPosition = (cellPosition: SudokuCellPosition): SudokuSectionPosition => {
+  const sectionPostion: SudokuSectionPosition = { x: undefined, y: undefined };
+
+  sectionPostion.x = Math.floor(cellPosition.x / 3);
+  sectionPostion.y = Math.floor(cellPosition.y / 3);
+
+  return sectionPostion;
+};
+
+export const getIsCellRelevant = (selectedCell: SudokuCellPosition, cellPosition: SudokuCellPosition): boolean => {
+  let isCellRelevant = false;
+
+  if (selectedCell.x === cellPosition.x) {
+    isCellRelevant = true;
+  } else if (selectedCell.y === cellPosition.y) {
+    isCellRelevant = true;
+  } else if (equals(cellPositionToSectionPosition(selectedCell), cellPositionToSectionPosition(cellPosition))) {
+    isCellRelevant = true;
+  }
+
+  return isCellRelevant;
+};
+
 const isNumberInRow = (board: SudokuBoard) => (number: number, rowIndex: number): Boolean => {
   const row = board[rowIndex];
   return !!row.find(cell => cell.number === number);
@@ -67,8 +90,8 @@ const isNumberInRow = (board: SudokuBoard) => (number: number, rowIndex: number)
 const isNumberInSection = (board: SudokuBoard) => (number: number, cellPosition: SudokuCellPosition): Boolean => {
   let isNumberInSec = false;
 
-  const rowStart = Math.floor(cellPosition[0] / 3) * 3;
-  const columnStart = Math.floor(cellPosition[1] / 3) * 3;
+  const rowStart = Math.floor(cellPosition.y / 3) * 3;
+  const columnStart = Math.floor(cellPosition.x / 3) * 3;
 
   for (let i = rowStart; i < rowStart + 3; i++) {
     for (let j = columnStart; j < columnStart + 3; j++) {
@@ -108,7 +131,7 @@ const solveSudokuBoard = (board: SudokuBoard, counter: {count: number}): Boolean
           // Check that this value has not already be used on this column
           if (!isNumberInColumn(board)(value, col)) {
             // Check that this value has not already be used on this 3x3 square
-            if (!isNumberInSection(board)(value, [row, col])) {
+            if (!isNumberInSection(board)(value, { x: col, y: row })) {
               board[row][col].number = value;
               if (checkSudokuBoard(board)(EMPTY_VALUE)) {
                 counter.count++;
@@ -142,7 +165,7 @@ const fillSudokuBoard = (board: SudokuBoard, loop = 0): SudokuBoard | undefined 
       for (const value of numbers) {
         const notInRow = !isNumberInRow(board)(value, row);
         const notInColumn = !isNumberInColumn(board)(value, col);
-        const notInSection = !isNumberInSection(board)(value, [row, col]);
+        const notInSection = !isNumberInSection(board)(value, { y: row, x: col });
 
         // Check that this value has not already be used on this row
         if (notInRow && notInColumn && notInSection) {

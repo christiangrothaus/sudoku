@@ -3,8 +3,14 @@ export type SudokuCell = {
   pencil: number[]
 };
 
-export type SudokuCellPosition = [number, number];
+export type SudokuCellPosition = {
+  x: number,
+  y: number
+};
 
-export type SudokuSectionPosition = [number, number];
+export type SudokuSectionPosition = {
+  x: number,
+  y: number
+};
 
 export type SudokuBoard = SudokuCell[][];

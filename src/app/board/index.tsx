@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
@@ -12,6 +12,7 @@ import { getBoard, storeBoard } from '../../utilities/storage';
 import { router, useLocalSearchParams } from 'expo-router';
 import IconButton from '../../components/IconButton';
 import FullscreenLoading from '../../components/FullscreenLoading';
+import { Difficulty } from '../../models/difficulties';
 
 export type SearchParams = {
   difficulty?: '0' | '1' | '2',
@@ -19,9 +20,8 @@ export type SearchParams = {
   useExistingBoard?: 'true' | 'false'
 }
 
-const getInitialBoardFromParams = async (params: SearchParams): Promise<SudokuBoardModel> => {
-  const { difficulty, useExistingBoard } = params;
-  if (useExistingBoard === 'true') {
+const getInitialBoard = async (difficulty: Difficulty, useExistingBoard: boolean): Promise<SudokuBoardModel> => {
+  if (useExistingBoard) {
     const board = await getBoard();
 
     if (board?.[0]?.[0]) {
@@ -29,26 +29,28 @@ const getInitialBoardFromParams = async (params: SearchParams): Promise<SudokuBo
     }
   }
 
-  return createSudokuBoard(Number(difficulty));
+  return createSudokuBoard(difficulty);
 };
 
 const Board = () => {
   const params = useLocalSearchParams();
+  const difficulty = useMemo(() => Number(params.difficulty), [params.difficulty]);
+  const useExistingBoard = useMemo(() => params.useExistingBoard === 'true', [params.useExistingBoard]);
   const [board, setBoard] = useState<SudokuBoardModel>();
-  const [selectedCell, setSelectedCell] = useState<SudokuCellPosition>();
+  const [selectedCell, setSelectedCell] = useState<SudokuCellPosition>({ x: undefined, y: undefined });
   const safeAreaInsets = useSafeAreaInsets();
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme, safeAreaInsets);
 
   useEffect(() => {
     const setInitalBoard = async (): Promise<void> => {
-      const board = await getInitialBoardFromParams(params);
+      const board = await getInitialBoard(difficulty, useExistingBoard);
 
       setBoard(board);
     };
 
     setInitalBoard();
-  }, []);
+  }, [difficulty, useExistingBoard]);
 
   const handleBack = useCallback((board) => {
     storeBoard(board, (isSaved) => {

@@ -1,5 +1,5 @@
 import { Difficulty } from '../../models/difficulties';
-import { shuffleRow, createSudokuBoard } from '../sudokuBoard';
+import { shuffleRow, createSudokuBoard, getIsCellRelevant, cellPositionToSectionPosition } from '../sudokuBoard';
 
 describe('shuffleRow', () => {
   it('should return an array with the same number of elements', () => {
@@ -34,5 +34,57 @@ describe('createSudokuBoard', () => {
     genericBoard.forEach((row) => {
       expect(row.length).toBe(9);
     });
+  });
+});
+
+describe('getIsCellRelevant', () => {
+  it('it should return true if the cell positions are in the same row', () => {
+    const selectedCellPosition = { x: 0, y: 4 };
+    const cellPosition = { x: 9, y: 4 };
+
+    const isCellRelevant = getIsCellRelevant(selectedCellPosition, cellPosition);
+
+    expect(isCellRelevant).toBe(true);
+  });
+
+  it('it should return true if the cell positions are in the same column', () => {
+    const selectedCellPosition = { x: 1, y: 8 };
+    const cellPosition = { x: 1, y: 1 };
+
+    const isCellRelevant = getIsCellRelevant(selectedCellPosition, cellPosition);
+
+    expect(isCellRelevant).toBe(true);
+  });
+
+  it('it should return true if the cell positions are in the same section', () => {
+    const selectedCellPosition = { x: 2, y: 2 };
+    const cellPosition = { x: 1, y: 1 };
+
+    const isCellRelevant = getIsCellRelevant(selectedCellPosition, cellPosition);
+
+    expect(isCellRelevant).toBe(true);
+  });
+
+  it('it should return false if the cell positions are not in the same section', () => {
+    const selectedCellPosition = { x: 8, y: 8 };
+    const cellPosition = { x: 1, y: 1 };
+
+    const isCellRelevant = getIsCellRelevant(selectedCellPosition, cellPosition);
+
+    expect(isCellRelevant).toBe(false);
+  });
+});
+
+describe('cellPositionToSectionPosition', () => {
+  it.each([
+    [{ x: 1, y: 1 }, { x: 0, y: 0 }],
+    [{ x: 3, y: 1 }, { x: 1, y: 0 }],
+    [{ x: 8, y: 7 }, { x: 2, y: 2 }],
+    [{ x: 5, y: 3 }, { x: 1, y: 1 }],
+    [{ x: 8, y: 5 }, { x: 2, y: 1 }],
+  ])('should correctly convert the cell position to the section position', (cellPosition, expectedSectionPosition) => {
+    const sectionPostion = cellPositionToSectionPosition(cellPosition);
+
+    expect(sectionPostion).toEqual(expectedSectionPosition);
   });
 });
