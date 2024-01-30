@@ -241,3 +241,15 @@ export const createSudokuBoard = (difficulty: Difficulty) => {
 
   return filledBoard;
 };
+
+export const checkIfBoardIsSolved = (board: SudokuBoard): boolean => {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (board[i][j].number !== board[i][j].answer) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+};

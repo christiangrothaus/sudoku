@@ -1,17 +1,28 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CELL_VALUES } from '../../constants/sudoku';
+import GameContext from '../../contexts/GameContext';
+import BoardContext from '../../contexts/BoardContext';
+import { clone } from 'ramda';
 
 const SudokuNumberButton = ({ value }) => {
   const colorTheme = useTheme();
   const safeAreaInsets = useSafeAreaInsets();
   const deviceWidth = Dimensions.get('window').width;
+  const { selectedCell } = useContext(GameContext);
+  const [board, setBoard] = useContext(BoardContext);
   const styles = styleSheet({ colorTheme, safeAreaInsets, deviceWidth });
 
   const handlePress = useCallback(() => {
-  }, []);
+    const clonedBoard = clone(board);
+
+    clonedBoard[selectedCell.y][selectedCell.x].number = value;
+
+    setBoard(clonedBoard);
+  }, [board, selectedCell.x, selectedCell.y, setBoard, value]);
 
   return (
     <Pressable onPress={handlePress}>
@@ -30,15 +41,9 @@ const SudokuNumberSelector = () => {
 
   return (
     <View style={styles.container}>
-      <SudokuNumberButton value={1} />
-      <SudokuNumberButton value={2} />
-      <SudokuNumberButton value={3} />
-      <SudokuNumberButton value={4} />
-      <SudokuNumberButton value={5} />
-      <SudokuNumberButton value={6} />
-      <SudokuNumberButton value={7} />
-      <SudokuNumberButton value={8} />
-      <SudokuNumberButton value={9} />
+      {CELL_VALUES.map((value) => {
+        return <SudokuNumberButton key={value} value={value} />;
+      })}
     </View>
   );
 };

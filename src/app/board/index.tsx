@@ -6,9 +6,9 @@ import SudokuBoard from '../../components/SudokuBoard';
 import { EdgeInsets, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import GameContext from '../../contexts/GameContext';
 import { SudokuBoard as SudokuBoardModel, SudokuCellPosition } from '../../models/sudoku';
-import { createSudokuBoard } from '../../utilities/sudokuBoard';
+import { checkIfBoardIsSolved, createSudokuBoard } from '../../utilities/sudokuBoard';
 import BoardContext from '../../contexts/BoardContext';
-import { getBoard, storeBoard } from '../../utilities/storage';
+import { clearStoredBoard, getBoard, storeBoard } from '../../utilities/storage';
 import { router, useLocalSearchParams } from 'expo-router';
 import IconButton from '../../components/IconButton';
 import FullscreenLoading from '../../components/FullscreenLoading';
@@ -52,7 +52,15 @@ const Board = () => {
     setInitalBoard();
   }, [difficulty, useExistingBoard]);
 
-  const handleBack = useCallback((board) => {
+  useEffect(() => {
+    const isSolved = checkIfBoardIsSolved(board);
+    if (isSolved) {
+      clearStoredBoard();
+      router.navigate('/');
+    }
+  }, [board]);
+
+  const handleBack = useCallback((board: SudokuBoardModel) => {
     storeBoard(board, (isSaved) => {
       if (isSaved) {
         router.navigate('/');

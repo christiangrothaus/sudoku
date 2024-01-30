@@ -2,7 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SudokuBoard as SudokuBoardModel } from '../models/sudoku';
 import { StorageKeys } from '../models/storage';
 
-export const storeBoard = async (board: SudokuBoardModel, successCallback: (success: boolean, error?: Error) => void) => {
+export const clearStoredBoard = (errorCallback?: (error?: Error) => void): void => {
+  AsyncStorage.removeItem(StorageKeys.BOARD, errorCallback);
+};
+
+export const storeBoard = async (board: SudokuBoardModel, successCallback: (success: boolean, error?: Error) => void): Promise<void> => {
   try {
     const serializedBoard = JSON.stringify(board);
     await AsyncStorage.setItem(StorageKeys.BOARD, serializedBoard);
