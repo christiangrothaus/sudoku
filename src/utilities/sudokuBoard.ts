@@ -199,6 +199,7 @@ export const createUnsetSudokuBoard = (): SudokuBoard => {
   return unsetBoard;
 };
 
+// Adapted from https://www.101computing.net/sudoku-generator-algorithm/
 export const createSudokuBoard = (difficulty: Difficulty) => {
   const unsetBoard = createUnsetSudokuBoard();
   const difficultyAttempts = {
