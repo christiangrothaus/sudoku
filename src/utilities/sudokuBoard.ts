@@ -5,7 +5,7 @@ import { Difficulty } from '../models/difficulties';
 
 export const EMPTY_VALUE: undefined = undefined;
 export const UNSET_VALUE: null = null;
-const BOARD_SIZE = 81;
+export const BOARD_SIZE = 81;
 
 export const shuffleRow = (array: number[]) => {
   const arrayOptions = clone(array);
@@ -25,8 +25,9 @@ export const shuffleRow = (array: number[]) => {
   return shuffledArray;
 };
 
-export const printBoard = (board: SudokuBoard, label?: string) => {
+export const printBoard = (board: SudokuBoard, prop?: string, label?: string) => {
   let output = '';
+  const property = prop || 'number';
 
   if (label) {
     output += `${label}\n`;
@@ -35,7 +36,7 @@ export const printBoard = (board: SudokuBoard, label?: string) => {
   board.forEach((row, rIdx) => {
     const seperator = (idx) => (idx !== 0 && idx !== 8) && (idx + 1) % 3 === 0 ? '| ' : '';
     const displayValue = (val) => val === undefined ? '?' : val;
-    const cols = row.reduce((acc, curr, idx) => acc += `${displayValue(curr.number)} ${seperator(idx)}`, '').trimEnd();
+    const cols = row.reduce((acc, curr, idx) => acc += `${displayValue(curr[property])} ${seperator(idx)}`, '').trimEnd();
     output += `${cols}\n`;
 
     if (rIdx !== 8 && (rIdx + 1) % 3 === 0) {
@@ -121,7 +122,7 @@ const checkSudokuBoard = (board: SudokuBoard) => (invalidValue: null | undefined
 const solveSudokuBoard = (board: SudokuBoard, counter: {count: number}): Boolean | undefined => {
   let row: number;
   let col: number;
-  for (let i = 0; i < 81; i++) {
+  for (let i = 0; i < BOARD_SIZE; i++) {
     row = Math.floor(i / 9);
     col = i % 9;
     if (board[row][col].number === EMPTY_VALUE) {
@@ -133,6 +134,7 @@ const solveSudokuBoard = (board: SudokuBoard, counter: {count: number}): Boolean
             // Check that this value has not already be used on this 3x3 square
             if (!isNumberInSection(board)(value, { x: col, y: row })) {
               board[row][col].number = value;
+              board[row][col].answer = value;
               if (checkSudokuBoard(board)(EMPTY_VALUE)) {
                 counter.count++;
                 break;
@@ -170,6 +172,7 @@ const fillSudokuBoard = (board: SudokuBoard, loop = 0): SudokuBoard | undefined 
         // Check that this value has not already be used on this row
         if (notInRow && notInColumn && notInSection) {
           board[row][col].number = value;
+          board[row][col].answer = value;
 
           if (checkSudokuBoard(board)(UNSET_VALUE)) {
             return board;
@@ -183,7 +186,7 @@ const fillSudokuBoard = (board: SudokuBoard, loop = 0): SudokuBoard | undefined 
       break;
     }
   }
-  board[row][col] = { number: null, pencil: [] };
+  board[row][col].number = UNSET_VALUE;
 };
 
 export const createUnsetSudokuBoard = (): SudokuBoard => {
@@ -192,7 +195,7 @@ export const createUnsetSudokuBoard = (): SudokuBoard => {
   for (let i = 0; i < 9; i++) {
     unsetBoard.push([]);
     for (let j = 0; j < 9; j++) {
-      unsetBoard[i].push({ number: UNSET_VALUE, pencil: [] });
+      unsetBoard[i].push({ number: UNSET_VALUE, pencil: [], answer: UNSET_VALUE });
     }
   }
 

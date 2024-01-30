@@ -1,5 +1,5 @@
 import { Difficulty } from '../../models/difficulties';
-import { shuffleRow, createSudokuBoard, getIsCellRelevant, cellPositionToSectionPosition } from '../sudokuBoard';
+import { shuffleRow, createSudokuBoard, getIsCellRelevant, cellPositionToSectionPosition, BOARD_SIZE } from '../sudokuBoard';
 
 describe('shuffleRow', () => {
   it('should return an array with the same number of elements', () => {
@@ -24,6 +24,35 @@ describe('createSudokuBoard', () => {
     });
 
     expect(valueCount).not.toBe(0);
+  });
+
+  it('should have an answer on every cell', () => {
+    let answerCount = 0;
+
+    genericBoard.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell.answer) {
+          answerCount++;
+        }
+      });
+    });
+
+    expect(answerCount).toBe(BOARD_SIZE);
+  });
+
+  it('should have 9 of each number in the answer', () => {
+    const numberCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
+    const expectedNumberCounts = { 1: 9, 2: 9, 3: 9, 4: 9, 5: 9, 6: 9, 7: 9, 8: 9, 9: 9 };
+
+    genericBoard.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell.answer) {
+          numberCounts[cell.answer]++;
+        }
+      });
+    });
+
+    expect(numberCounts).toEqual(expectedNumberCounts);
   });
 
   it('should have 9 rows', () => {
