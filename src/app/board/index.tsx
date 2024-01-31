@@ -54,10 +54,15 @@ const Board = () => {
 
   useEffect(() => {
     const isSolved = checkIfBoardIsSolved(board);
-    if (isSolved) {
-      clearStoredBoard();
-      router.navigate('/');
-    }
+
+    const handleSolvedBoard = async (isSolved: boolean): Promise<void> => {
+      if (isSolved) {
+        await clearStoredBoard();
+        router.navigate('/');
+      }
+    };
+
+    handleSolvedBoard(isSolved);
   }, [board]);
 
   const handleBack = useCallback((board: SudokuBoardModel) => {
