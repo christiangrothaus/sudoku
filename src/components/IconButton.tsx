@@ -4,14 +4,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import THEMES from '../themes';
 import useTheme from '../hooks/useTheme';
 
-type PropsModel = {
+type Props = {
   name: string,
-  onPress?: (e: GestureResponderEvent) => void,
+  onPress: (e: GestureResponderEvent) => void,
   size?: number,
   style?: StyleProp<ViewStyle>
 }
 
-const IconButton = ({ name, size = 30, style, onPress }: PropsModel) => {
+const IconButton = ({ name, size = 30, style, onPress }: Props) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
 

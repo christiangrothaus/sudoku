@@ -22,7 +22,7 @@ const IconLink = ({ name, size = 30, style, href, replace, push, asChild, onPres
 
   return (
     <View style={style}>
-      <Link href={href} replace={replace} push={push} asChild={asChild} onPress={onPress}>
+      <Link suppressHighlighting href={href} replace={replace} push={push} asChild={asChild} onPress={onPress}>
         <Icon name={name} size={size} color={styles.icon.color} />
       </Link>
     </View>

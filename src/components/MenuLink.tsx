@@ -9,13 +9,13 @@ type PropsModel = {
   text: string
 }
 
-const MenuLink = ({ href, replace, push, asChild, text }: LinkProps & PropsModel) => {
+const MenuLink = ({ href, replace, push, asChild, text, onPress }: LinkProps & PropsModel) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
 
   return (
     <View style={styles.container}>
-      <Link href={href} replace={replace} push={push} asChild={asChild}>
+      <Link suppressHighlighting onPress={onPress} href={href} replace={replace} push={push} asChild={asChild}>
         <Text style={styles.button}>
           {text}
         </Text>
