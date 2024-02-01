@@ -4,6 +4,7 @@ import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
 import SudokuNumberSelector from './NumberSelector';
 import SudokuBoardRow from './SudokuRow';
+import Timer from './Timer';
 
 const SudokuBoard = () => {
   const colorTheme = useTheme();
@@ -11,19 +12,22 @@ const SudokuBoard = () => {
 
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.boardWrapper}>
-          <SudokuBoardRow row={0}/>
-          <SudokuBoardRow row={1}/>
-          <SudokuBoardRow row={2}/>
-          <View style={styles.hortizontalDivider} />
-          <SudokuBoardRow row={3}/>
-          <SudokuBoardRow row={4}/>
-          <SudokuBoardRow row={5}/>
-          <View style={styles.hortizontalDivider} />
-          <SudokuBoardRow row={6}/>
-          <SudokuBoardRow row={7}/>
-          <SudokuBoardRow row={8}/>
+      <View style={styles.boardToolsContainer}>
+        <Timer />
+        <View style={styles.boardContainer}>
+          <View style={styles.boardWrapper}>
+            <SudokuBoardRow row={0}/>
+            <SudokuBoardRow row={1}/>
+            <SudokuBoardRow row={2}/>
+            <View style={styles.hortizontalDivider} />
+            <SudokuBoardRow row={3}/>
+            <SudokuBoardRow row={4}/>
+            <SudokuBoardRow row={5}/>
+            <View style={styles.hortizontalDivider} />
+            <SudokuBoardRow row={6}/>
+            <SudokuBoardRow row={7}/>
+            <SudokuBoardRow row={8}/>
+          </View>
         </View>
       </View>
       <SudokuNumberSelector />
@@ -32,7 +36,13 @@ const SudokuBoard = () => {
 };
 
 const styleSheet = (colorTheme) => StyleSheet.create({
-  container: {
+  boardToolsContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%'
+  },
+  boardContainer: {
     marginHorizontal: 15,
     flex: 1,
     alignItems: 'center',
