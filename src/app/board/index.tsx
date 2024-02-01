@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
@@ -33,8 +33,8 @@ const getInitialBoard = async (difficulty: Difficulty, useExistingBoard: boolean
 
 const Board = () => {
   const params = useLocalSearchParams();
-  const difficulty = Number(params.difficulty);
-  const useExistingBoard = params.useExistingBoard === 'true';
+  const difficulty = useMemo(() => Number(params.difficulty), [params.difficulty]);
+  const useExistingBoard = useMemo(() => params.useExistingBoard === 'true', [params.useExistingBoard]);
   const [board, setBoard] = useState<SudokuBoardModel>(createUnsetSudokuBoard());
   const [selectedCell, setSelectedCell] = useState<SudokuCellPosition>({ x: undefined, y: undefined });
   const [isLoading, setIsLoading] = useState(true);
@@ -44,10 +44,10 @@ const Board = () => {
 
   useEffect(() => {
     const setInitalBoard = async (): Promise<void> => {
-      const board = await getInitialBoard(difficulty, useExistingBoard);
+      const initialBoard = await getInitialBoard(difficulty, useExistingBoard);
 
       setIsLoading(false);
-      setBoard(board);
+      setBoard(initialBoard);
     };
 
     setInitalBoard();

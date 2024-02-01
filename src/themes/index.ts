@@ -7,6 +7,10 @@ const THEMES = {
     dark: '#eeeeee',
     light: '#1d1c22'
   },
+  enteredNumberColor: {
+    dark: '#FFD700',
+    light: '#FFD700'
+  },
   accentColor: {
     dark: '#2372f6',
     light: '#2372f6'

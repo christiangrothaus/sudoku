@@ -14,7 +14,7 @@ const SudokuCell = ({ cell, cellPosition }: {cell: SudokuCellType, cellPosition:
   const isRelevantCell = useMemo(() => {
     return getIsCellRelevant(selectedCell, cellPosition);
   }, [cellPosition, selectedCell]);
-  const styles = styleSheet(colorTheme, isSelectedCell, isRelevantCell);
+  const styles = styleSheet(colorTheme, isSelectedCell, isRelevantCell, cell.isGenerated);
 
   const handlePress = useCallback(() => {
     setSelectedCell(cellPosition);
@@ -27,7 +27,7 @@ const SudokuCell = ({ cell, cellPosition }: {cell: SudokuCellType, cellPosition:
   );
 };
 
-const styleSheet = (colorTheme, isSelectedCell, isRelevantCell) => StyleSheet.create({
+const styleSheet = (colorTheme, isSelectedCell, isRelevantCell, isGeneratedNumber) => StyleSheet.create({
   cellWrapper: {
     flex: 1,
     aspectRatio: 1,
@@ -40,7 +40,7 @@ const styleSheet = (colorTheme, isSelectedCell, isRelevantCell) => StyleSheet.cr
   cellText: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    color: THEMES.color[colorTheme],
+    color: isGeneratedNumber ? THEMES.color[colorTheme] : THEMES.enteredNumberColor[colorTheme],
     fontWeight: 'bold',
     fontSize: 100
   }

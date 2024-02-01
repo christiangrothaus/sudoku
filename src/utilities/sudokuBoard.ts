@@ -134,7 +134,7 @@ const solveSudokuBoard = (board: SudokuBoard, counter: {count: number}): Boolean
             // Check that this value has not already be used on this 3x3 square
             if (!isNumberInSection(board)(value, { x: col, y: row })) {
               board[row][col].number = value;
-              board[row][col].answer = value;
+
               if (checkSudokuBoard(board)(EMPTY_VALUE)) {
                 counter.count++;
                 break;
@@ -195,7 +195,7 @@ export const createUnsetSudokuBoard = (): SudokuBoard => {
   for (let i = 0; i < 9; i++) {
     unsetBoard.push([]);
     for (let j = 0; j < 9; j++) {
-      unsetBoard[i].push({ number: UNSET_VALUE, pencil: [], answer: EMPTY_VALUE });
+      unsetBoard[i].push({ number: UNSET_VALUE, pencil: [], answer: EMPTY_VALUE, isGenerated: true });
     }
   }
 
@@ -224,7 +224,9 @@ export const createSudokuBoard = (difficulty: Difficulty) => {
     }
     // Remember its cell value in case we need to put it back
     const backupValue = clone(filledBoard[row][col]);
+    console.log(filledBoard[row][col]);
     filledBoard[row][col].number = EMPTY_VALUE;
+    filledBoard[row][col].isGenerated = false;
 
     const boardCopy = clone(filledBoard);
 

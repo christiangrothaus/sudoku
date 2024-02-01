@@ -1,7 +1,8 @@
 export type SudokuCell = {
   number: number | null | undefined
   pencil: number[],
-  answer: number | null | undefined
+  answer: number | null | undefined,
+  isGenerated: boolean
 };
 
 export type SudokuCellPosition = {
