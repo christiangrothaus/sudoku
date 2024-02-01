@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
@@ -7,7 +7,6 @@ import { EdgeInsets, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-a
 import GameContext from '../../contexts/GameContext';
 import { SudokuBoard as SudokuBoardModel, SudokuCellPosition } from '../../models/sudoku';
 import { checkIfBoardIsSolved, createSudokuBoard, createUnsetSudokuBoard } from '../../utilities/sudokuBoard';
-import BoardContext from '../../contexts/BoardContext';
 import { clearStoredBoard, getBoard, storeBoard } from '../../utilities/storage';
 import { router, useLocalSearchParams } from 'expo-router';
 import IconButton from '../../components/IconButton';
