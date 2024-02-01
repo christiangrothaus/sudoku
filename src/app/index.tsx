@@ -38,7 +38,7 @@ const HomeScreen = () => {
 
   const handleConfirmPress = useCallback(() => {
     clearStoredBoard();
-    router.navigate('select-difficulty');
+    router.navigate('/select-difficulty');
   }, []);
 
   const handleCancelPress = useCallback(() => {
@@ -49,7 +49,7 @@ const HomeScreen = () => {
     <>
       <View style={styles.container}>
         {existingBoard && <MenuLink href={{ pathname: '/board', params: { useExistingBoard: true } }} text="Resume" />}
-        <MenuLink onPress={handleStartPress} href="" text="Start" />
+        <MenuLink onPress={handleStartPress} href="/select-difficulty" text="Start" />
         <MenuLink href="/board" text="Daily Puzzle" />
       </View>
       <ConfirmationModal visible={isModalVisible}>

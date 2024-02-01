@@ -195,7 +195,7 @@ export const createUnsetSudokuBoard = (): SudokuBoard => {
   for (let i = 0; i < 9; i++) {
     unsetBoard.push([]);
     for (let j = 0; j < 9; j++) {
-      unsetBoard[i].push({ number: UNSET_VALUE, pencil: [], answer: UNSET_VALUE });
+      unsetBoard[i].push({ number: UNSET_VALUE, pencil: [], answer: EMPTY_VALUE });
     }
   }
 

@@ -6,7 +6,7 @@ import SudokuBoard from '../../components/SudokuBoard';
 import { EdgeInsets, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import GameContext from '../../contexts/GameContext';
 import { SudokuBoard as SudokuBoardModel, SudokuCellPosition } from '../../models/sudoku';
-import { checkIfBoardIsSolved, createSudokuBoard } from '../../utilities/sudokuBoard';
+import { checkIfBoardIsSolved, createSudokuBoard, createUnsetSudokuBoard } from '../../utilities/sudokuBoard';
 import BoardContext from '../../contexts/BoardContext';
 import { clearStoredBoard, getBoard, storeBoard } from '../../utilities/storage';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -34,10 +34,11 @@ const getInitialBoard = async (difficulty: Difficulty, useExistingBoard: boolean
 
 const Board = () => {
   const params = useLocalSearchParams();
-  const difficulty = useMemo(() => Number(params.difficulty), [params.difficulty]);
-  const useExistingBoard = useMemo(() => params.useExistingBoard === 'true', [params.useExistingBoard]);
-  const [board, setBoard] = useState<SudokuBoardModel>();
+  const difficulty = Number(params.difficulty);
+  const useExistingBoard = params.useExistingBoard === 'true';
+  const [board, setBoard] = useState<SudokuBoardModel>(createUnsetSudokuBoard());
   const [selectedCell, setSelectedCell] = useState<SudokuCellPosition>({ x: undefined, y: undefined });
+  const [isLoading, setIsLoading] = useState(true);
   const safeAreaInsets = useSafeAreaInsets();
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme, safeAreaInsets);
@@ -46,6 +47,7 @@ const Board = () => {
     const setInitalBoard = async (): Promise<void> => {
       const board = await getInitialBoard(difficulty, useExistingBoard);
 
+      setIsLoading(false);
       setBoard(board);
     };
 
@@ -73,21 +75,19 @@ const Board = () => {
     });
   }, []);
 
-  if (!board) {
+  if (isLoading) {
     return (
       <FullscreenLoading />
     );
   }
 
   return (
-    <BoardContext.Provider value={[board, setBoard]}>
-      <GameContext.Provider value={{ selectedCell, setSelectedCell }}>
-        <SafeAreaView style={styles.container}>
-          <IconButton onPress={() => handleBack(board)} name="arrow-back" style={styles.backButton} />
-          <SudokuBoard />
-        </SafeAreaView>
-      </GameContext.Provider>
-    </BoardContext.Provider>
+    <GameContext.Provider value={{ selectedCell, setSelectedCell, board, setBoard }}>
+      <SafeAreaView style={styles.container}>
+        <IconButton onPress={() => handleBack(board)} name="arrow-back" style={styles.backButton} />
+        <SudokuBoard />
+      </SafeAreaView>
+    </GameContext.Provider>
   );
 };
 

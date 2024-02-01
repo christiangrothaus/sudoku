@@ -5,15 +5,13 @@ import useTheme from '../../hooks/useTheme';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CELL_VALUES } from '../../constants/sudoku';
 import GameContext from '../../contexts/GameContext';
-import BoardContext from '../../contexts/BoardContext';
 import { clone } from 'ramda';
 
 const SudokuNumberButton = ({ value }) => {
   const colorTheme = useTheme();
   const safeAreaInsets = useSafeAreaInsets();
   const deviceWidth = Dimensions.get('window').width;
-  const { selectedCell } = useContext(GameContext);
-  const [board, setBoard] = useContext(BoardContext);
+  const { selectedCell, board, setBoard } = useContext(GameContext);
   const styles = styleSheet({ colorTheme, safeAreaInsets, deviceWidth });
 
   const handlePress = useCallback(() => {

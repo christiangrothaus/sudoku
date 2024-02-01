@@ -3,12 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import THEMES from '../../themes';
 import useTheme from '../../hooks/useTheme';
 import SudokuCell from './SudokoCell';
-import BoardContext from '../../contexts/BoardContext';
+import GameContext from '../../contexts/GameContext';
 
 const SudokuBoardRow = ({ row }: {row: number}) => {
   const colorTheme = useTheme();
   const styles = styleSheet(colorTheme);
-  const [board] = useContext(BoardContext);
+  const { board } = useContext(GameContext);
   const rowData = board[row];
 
   return (
